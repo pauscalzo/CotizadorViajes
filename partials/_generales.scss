@@ -20,6 +20,18 @@ body {
     background-color: #f8f9fa;
 }
 
+select {
+    padding: 5px 10px;
+    border: cornflowerblue solid 2px;
+    border-radius: 5px;
+}
+
+input {
+    padding: 4.5px 0px;
+    border: cornflowerblue solid 2px;
+    border-radius: 5px;
+}
+
 @mixin flex-contenedores {
     display: flex;
     flex-wrap: wrap;

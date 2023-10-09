@@ -26,6 +26,18 @@ body {
   background-color: #f8f9fa;
 }
 
+select {
+  padding: 5px 10px;
+  border: cornflowerblue solid 2px;
+  border-radius: 5px;
+}
+
+input {
+  padding: 4.5px 0px;
+  border: cornflowerblue solid 2px;
+  border-radius: 5px;
+}
+
 /* estilos para el texto y headings */
 p {
   color: #353535;
@@ -204,6 +216,91 @@ h6 {
   background-image: url("../img/banner.png");
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.filtros {
+  background-image: url("../img/slider01.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 10% 0px;
+  text-align: center;
+}
+.filtros .filtroPaquetes {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  background-color: aliceblue;
+  padding: 2%;
+  margin: 0 20%;
+}
+.filtros .filtroPaquetes .filtro {
+  margin: 5px 5px;
+}
+.filtros .filtroPaquetes .boton {
+  display: inline-block;
+  background-color: #00b0f4;
+  border: 1px solid #20167c;
+  border-radius: 5px;
+  padding: 10px 30px;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 0.5s;
+}
+.filtros .filtroPaquetes .boton:hover {
+  background-color: #20167c;
+}
+.filtros .respuesta {
+  background-color: #20167c;
+  color: #ffffff;
+  position: absolute;
+  visibility: hidden;
+  padding: 2%;
+  margin: 5%;
+}
+.filtros .respuesta .letraChica {
+  font-size: 0.8rem;
+}
+.filtros .respuesta #btn-cerrar-respuesta {
+  font-size: 2rem;
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  z-index: 6;
+  color: #ffffff;
+}
+.filtros .respuestaActive {
+  opacity: 1;
+  visibility: visible;
+  z-index: 5;
+}
+
+.modalContenedor {
+  background-color: aliceblue;
+  border: 1px solid #20167c;
+  padding: 1%;
+  margin: 1%;
+  position: absolute;
+  visibility: hidden;
+  top: 8%;
+  right: 3%;
+}
+.modalContenedor .modalCotizacion #btn-cerrar-carrito {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 1%;
+  right: 1%;
+  z-index: 6;
+}
+
+.modalCotizacionActive {
+  opacity: 1;
+  visibility: visible;
+  z-index: 5;
 }
 
 /* estilos para nosotros  */
@@ -582,6 +679,9 @@ h6 {
   }
   .header .desktop {
     display: none;
+  }
+  .filtros .filtroPaquetes {
+    display: block;
   }
   .nosotros .columnas-nosotros {
     display: block;

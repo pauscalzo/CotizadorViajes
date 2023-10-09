@@ -1,0 +1,112 @@
+
+.filtros {
+    background-image: url("../img/slider01.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 10% 0px;
+    text-align: center;
+
+    .filtroPaquetes {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-evenly;
+        background-color: $color-fondo;
+        padding: 2%;
+        margin: 0 20%;  
+
+        .filtro {
+            margin: 5px 5px;
+        }
+
+        .boton {
+            display:inline-block;
+            background-color: $color-principal;
+            border: 1px solid $color-secundario;
+            border-radius: 5px;
+            padding: 10px 30px;
+            font-family: $font-principal;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.5s;
+        
+            &:hover {
+                background-color: $color-secundario;
+            }
+
+        }
+    }
+
+    .respuesta {
+        background-color: $color-secundario;
+        color: #ffffff;
+        position: absolute;
+        visibility: hidden;
+        padding: 2%;
+        margin: 5%;  
+
+        .letraChica{
+            font-size: 0.8rem;
+        }
+
+
+        #btn-cerrar-respuesta {
+            font-size: 2rem;
+            position: absolute;
+            top: 1%;
+            right: 1%;
+            z-index: 6;
+            color:#ffffff;
+            
+        }
+    }
+    .respuestaActive {
+        opacity: 1;
+        visibility: visible;
+        z-index: 5;
+    }
+
+}
+
+
+.modalContenedor {
+    background-color: $color-fondo;
+    border: 1px solid $color-secundario;
+    padding: 1%;
+    margin: 1%;  
+    position: absolute;
+    visibility: hidden;
+    top: 8%;
+    right: 3%;
+
+
+    .modalCotizacion {
+
+        #btn-cerrar-carrito {
+        font-size: 1.5rem;
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        z-index: 6;
+
+    }
+
+  }
+}
+
+.modalCotizacionActive {
+        opacity: 1;
+        visibility: visible;
+        z-index: 5;
+
+}
+  
+  
+  
+  
+  
+  
+  

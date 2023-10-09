@@ -1,156 +1,154 @@
-// Saludo de Bienvenida
+// creo variables 
 
-alert('¡Hola! Bienvenido a Blog de Viaje. Este es el cotizador de paquetes turísticos para verano del 2024');
-
-// creo variables let
-
-let nombre = prompt ("¿Como te llamas?");
-let paqueteElegido = '';
-let paqueteElegidoError = '';
-let cantidadAdultos = 0;
-let cantidadNinos = 0;
-let precio = 0;
 let subtotal = 0;
-let subtotal2 = 0;
-let askAgain = true;
+let impuestos = 0;
+let selectDestinos = document.getElementById("destinos");
+let selectPaquetes = document.getElementById("paquetes");
+let cotizaciones = [];
 
-// creo un array de objetos con los detalles de los paquetes turísticos. Lo guardo en la variable paquetes.
+// Declaro función mostrarOpcion para que se pinten en el DOM las opciones de destinos o paquetes con js.
 
-const paquetes = [
-  {nombre: "ITALIA", precio: 1700, categoria: "A"},
-  {nombre: "FRANCIA", precio: 1800, categoria: "A"},
-  {nombre: "INGLATERRA", precio: 1900, categoria: "A"},
-  {nombre: "PUNTACANA", precio: 1200, categoria: "B"},
-  {nombre: "MEXICO", precio: 1300, categoria: "B"},
-  {nombre: "PANAMA", precio: 1300, categoria: "B"},
-  {nombre: "ORLANDO", precio: 1500, categoria: "C"},
-  {nombre: "CALIFORNIA", precio: 1600, categoria: "C"},
-  {nombre: "MIAMI", precio: 1550, categoria: "C"},
-  {nombre: "BUZIOS", precio: 800, categoria: "D"},
-  {nombre: "RIO", precio: 900, categoria: "D"},
-  {nombre: "NATAL", precio: 1000, categoria: "D"}
-];
+function mostrarOpcion (array, posicion) {
+    let item ="<option selected disabled>--Seleccione--</option>"
+    for (let i = 0; i < array.length; i++){
+        item += `<option value="${array[i]}">${array[i]}</option>`
+    } 
+    return posicion.innerHTML = item;
+};
 
-// Creo un ciclo do while para el bucle que se genera en la búsqueda del destino. El ciclo comienza con una pregunta acerca de los distintos destinos disponibles. Esta pregunta puede tener 5 posibles respuestas que corresponden a las categorías de los objetos del Array anteriormente creado.
+// Ejecuto la función mostrarOpcion para destinos
 
-do {
+mostrarOpcion (destinos, selectDestinos);
 
-  let destino = prompt('Hola '+nombre+' ¿Que destino preferís? Elegí entre las opciones: A) Europa. B) Caribe. C) Norte América. D) Brasil. E) Medio Oriente').toUpperCase();
+// Ejecuto la función mostrarOpcion para paquetes. Creo un switch para desplegar los paquetes que corresponden a cada destino.
 
-  // Una vez que el usuario elige una categoría necesito filtrar dentro del array los objetos que tienen esa categoría. Es decir los paquetes que hay disponibles para ese destino. Para lograr esto utilizo una funcion de orden superior: Filter. El resultado del filtro lo guardo en la variable destinoElegido.
+const recortar = (array, inicio, fin, posicion) => {
+    let recortarArray = array.slice(inicio, fin);
+    mostrarOpcion (recortarArray, posicion);
+};
 
-  const destinoElegido = paquetes.filter (paquete => 
-  paquete.categoria === destino);
+selectDestinos.addEventListener ('change', function(){
+    let valor = selectDestinos.value;
+        switch (valor) {
+            case "Europa":
+                recortar(paquetes, 0, 3, selectPaquetes);
+                break;
+            case "Caribe":
+                recortar(paquetes, 3, 6, selectPaquetes);
+                break;
+            case "NorteAmerica":
+                recortar(paquetes, 6, 9, selectPaquetes);
+                break;
+            case "Brasil":
+                recortar(paquetes, 9, 12, selectPaquetes);
+                break;
+            }
+});
 
-  console.log(destinoElegido);
+// Al escuchar el click sobre el boton cotizar se ejecuta la funcion tomarValores.
 
-  // Si el usuario eligió la categoría A, B, C o D el largo de la variable destinoElegido será mayor a cero, caso contrario si el usuario eligió la categoría E o bien ingreso mal el valor, el largo de esa variable no será mayor a cero. Entonces aplico if else para estas dos posibilidades.
+const cotizar = document.getElementById("cotizar");
 
-  if (destinoElegido.length > 0) {
+cotizar.addEventListener("click", tomarValores);
+ 
+// Declaro la funcion tomarValores. 
 
-      // Si el usuario eligió A, B, C o D necesito mostrarle el resultado de su búsqueda. Para esto edito el Array encerrado en la variable destinoElegido con la función de orden superior map para que solo muestre el nombre de cada objeto dentro del Array. Lo transformo en string con join para poder mostrarlo. Le muestro el resultado y necesito cortar el ciclo por eso declaro false a la variable askAgain.
+const respuesta = document.getElementById("respuesta");
 
-      const resultadoBusqueda = destinoElegido.map(item => item.nombre).join(', ');
-      
-      paqueteElegido = prompt('Genial '+nombre+' hemos encontrado estos paquetes: '+resultadoBusqueda+ '. Escribe a continuación cual te interesa cotizar.').toUpperCase();
+function tomarValores () {
 
-      // Encerré dentro de la variable paqueteElegido el nombre del paquete que quiere cotizar el usuario.
+    selectPaquetes = document.getElementById("paquetes").value; // tomo el valor que se selecciono en el select de paquetes.
+    const paqueteElegido = precioPaquetes.find (paquete => paquete.nombre == selectPaquetes); // busco el paquete dentro del array precioPaquetes que coincide con el nombre seleccionado por el usuario. Lo encierro en una variable denominada paqueteElegido.
+    paqueteElegido.cantidadAdultos = Number(document.getElementById("adultos").value); // edito en el array paqueteElegido la cantidad de adultos y niños.
+    paqueteElegido.cantidadNinos = Number(document.getElementById("ninos").value);
 
-      askAgain = false;
-  } else {
+    subtotal = (paqueteElegido.precio * paqueteElegido.cantidadAdultos) + (paqueteElegido.precio * paqueteElegido.cantidadNinos/2); // calculo el precio y los impuestos.
+    impuestos = subtotal * 0.21;
 
-      // Si no eligió ni la categoría A, B, C o D el array destinoElegido estará vacío y necesito que se le muestre esto al usuario y que se le vuelva a preguntar que destino prefiere. Entonces el bucle se vuelve a iniciar.
+    const respuestaContenedor = document.getElementById("respuestaContenedor");
 
-      alert('Lo siento '+nombre+' no hay paquetes disponibles para la categoría seleccionada.');
-  }
-} while (askAgain);
-
-// Tengo el nombre del paquete que quiere cotizar el usuario en la variable paqueteElegido. Pero necesito encontrar el objeto que tiene ese nombre dentro del array de objetos. Para eso utilizo una funcion de orden superior: Find. El resultado lo guardo en la variable resultadoPaquete.
-
-const resultadoPaquete = paquetes.find (paquete => paquete.nombre === paqueteElegido);
-
-console.log(resultadoPaquete);
-
-
-// Si el usuario no colocó bien el nombre del paquete en el prompt de la línea 52, entonces la variable resultadoPaquete arrojará "undefined" porque no encuentra ningún nombre de paquete que coincida con ese valor, por ende no podemos continuar. Para solucionar esto uso if else. Si resultadoPaquete es undefined se le comunica al usuario y se le vuelve a pedir que coloque el nombre del paquete. Se guarda ese dato en la variable paqueteElegidoError.
-
-if (typeof resultadoPaquete === "undefined"){
-
-      paqueteElegidoError = prompt('Lo siento '+nombre+' tenés que escribir exacto el nombre del paquete elegido.').toUpperCase();
-
-  } else {
-
-      alert ('Buenisimo '+nombre+' te haré algunas preguntas más antes de darte la cotización.')
-
-}
-
-// Utilizó la misma lógica y herramientas para encontrar el objeto que posee ese nombre.
-
-const resultadoPaqueteError = paquetes.find (paquete => paquete.nombre === paqueteElegidoError);
-
-console.log(resultadoPaqueteError); 
-
-// Continuo con las preguntas para cotizar:
-
-cantidadAdultos = Number(prompt('¿Cuantos pasajeros adultos, mayores de 12 años, viajan?'));
-cantidadNinos = Number(prompt('¿Cuantos pasajeros niños, menores de 12 años, viajan?')); 
-
-// Calculo el subtotal (variable let declarada al inicio). Tanto la variable resultadoPaquete o bien resultadoPaqueteError me arrojan el paquete exacto a cotizar. Necesito únicamente el precio de ese paquete. Entonces calculo el subtotal multiplicando el precio del paquete por la cantidad de pasajeros que viajan. Los menores pagan la mitad. El calculo del subtotal será distinto en cada caso y es por eso que utilizo if else.
-
-if (typeof resultadoPaquete === "undefined"){
-
-  subtotal = resultadoPaqueteError.precio * (cantidadAdultos + cantidadNinos/2);
-
-  } else {
-
-  subtotal = resultadoPaquete.precio * (cantidadAdultos + cantidadNinos/2);
-
-}
-
-console.log(subtotal);
-
-alert('El costo de tu paquete es: U$S '+subtotal+ ' + IMP');
-
+    cotizaciones.push(paqueteElegido); // envío el paqueteElegido editado al array vacio cotizaciones.
+    actualizarCotizaciones (cotizaciones); // actualizo el contador del carrito.
+    agregarCotizacion (cotizaciones); // actualizo el modal del carrito.
+    respuesta.classList.add('respuestaActive'); // muestro el contenedor deonde estará la respuesta.
     
-// Calculo los impuestos. Aplico el IVA.
+    
+    return respuestaContenedor.innerHTML = `
+        <h5>El presupuesto de tu paquete para ${paqueteElegido.cantidadAdultos} adultos y ${paqueteElegido.cantidadNinos} niños con destino a ${selectPaquetes} es de USD ${subtotal}<span class="letraChica"> + USD ${impuestos} de impuestos.</span> Gracias por cotizar con nosotros.</h5>
+    ` // retorna la respuesta para el usuario.
+};
 
-let subtotalConIva = subtotal * 1.21
 
-console.log(subtotalConIva);
+// Declaro las funciones para actualizar el contador del carrito.
+
+const actualizarCotizaciones = (cotizaciones) => {
+    const totalCantidad = cotizaciones.reduce((acc, item) => acc + item.cantidad, 0);
+    pintarCotizaciones (totalCantidad);  
+};
+
+const pintarCotizaciones = (totalCantidad) => {
+    const contadorCarrito = document.getElementById('contador');
+    contadorCarrito.innerText = totalCantidad;
+};
+
+// Declaro la función para actualizar el modal del carrito.
+
+const contenedor = document.getElementById('cotizacionesContenedor');
+
+const agregarCotizacion = (cotizaciones) => {
+    contenedor.innerHTML = '';
+
+    cotizaciones.forEach(paqueteElegido => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <p>- Paquete: ${paqueteElegido.nombre}. Precio: USD ${(paqueteElegido.precio * paqueteElegido.cantidadAdultos) + (paqueteElegido.precio * paqueteElegido.cantidadNinos/2)} + imp. n° Adultos: ${paqueteElegido.cantidadAdultos} n° Niños: ${paqueteElegido.cantidadNinos}  <button class="botonEliminar" value="${paqueteElegido.id}"> X </button></p>
             
-alert('Sumando los impuestos te quedaría: U$S '+subtotalConIva);
+        `
+        contenedor.appendChild(div);
+    });
+    guardarCotizacionesStorage(cotizaciones);
+};
 
-// Creo una función con condicionales if else para aplicar un cupón. Si no aplica el cupón o lo aplica mal no se obtiene el descuento.
+// Declaro la función para cerrar la respuesta al usuario cuando se escuche el click sobre la cruz.
 
-const aplicarDescuento = (subtotalConIva) => {
-    let cupon = prompt('¡¡Hoy es tu día de suerte '+nombre+'!! Ingresá el código cincoOff y obtené un descuento del 5% en el total');
-    const descuento = 0.05; 
+const cerrarRespuesta = document.getElementById('btn-cerrar-respuesta');
 
-    if (cupon === "cincoOff") { 
-        return subtotalConIva * (1 - descuento);
-    } else {
-        return subtotalConIva;
+cerrarRespuesta.addEventListener('click', () => {
+    respuesta.classList.remove('respuestaActive')
+});
+
+// Declaro funciones para que se pueda eliminar una cotización del modal del carrito al clickear la cruz.
+
+contenedor.addEventListener('click', (e) => {
+    e.target.classList.contains('botonEliminar') && eliminarCotizacionRealizada(e.target.value);   
+});
+
+const eliminarCotizacionRealizada = (cotizacionId) => {
+    const cotizacionEliminar = cotizaciones.findIndex(paqueteElegido => paqueteElegido.id == cotizacionId);
+    cotizaciones.splice(cotizacionEliminar, 1);
+    agregarCotizacion(cotizaciones);
+    actualizarCotizaciones (cotizaciones);
+};
+
+// Declaro las funciones para guardar y luego recuperar las cotizaciones realizadas en localStorage.
+
+const guardarCotizacionesStorage = (cotizaciones) => {
+    localStorage.setItem('cotizacionesGuardadas', JSON.stringify(cotizaciones));
+};
+
+const obtenerCotizacionesStorage = () => {
+    return JSON.parse(localStorage.getItem('cotizacionesGuardadas'));
+};
+
+const cargarCarrito = () => {
+    if (localStorage.getItem('cotizacionesGuardadas')) {
+        cotizaciones = obtenerCotizacionesStorage();
+        agregarCotizacion(cotizaciones);
+        actualizarCotizaciones (cotizaciones);
     }
 };
 
-// invoco la función recientemente creada
-
-const precioFinal = aplicarDescuento(subtotalConIva);
-
-console.log(precioFinal);
-
-// Creo una funcion para mostrar el precio final
-
-const mostrarDetalle = (precioFinal) => {
-    alert('El precio final de tu paquete es: US$ ' +precioFinal);
-    alert('Gracias '+nombre+' por cotizar tu paquete con nosotros. ¡Hasta la próxima!');
-};
-
-// invoco la función recientemente creada
-
-mostrarDetalle(precioFinal);
-
-
+cargarCarrito();
 
 
 
